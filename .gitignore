@@ -1,2 +1,5 @@
 node_moduleS
 .env
+.env.development
+.env.production
+.neon_local/
