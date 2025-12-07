@@ -11,15 +11,14 @@ import {
 } from '#validations/users.validation.js';
 import { formatValidationErrors } from '#utils/format.js';
 
-
 export const fetchAllUsers = async (req, res, next) => {
-  try{
+  try {
     logger.info('Fetching all users');
     const allUsers = await getAllUsers();
     res.json({
       message: 'Users retrieved successfully',
       users: allUsers,
-      count: allUsers.length
+      count: allUsers.length,
     });
   } catch (error) {
     logger.error('Error in getAllUsers controller:', error);

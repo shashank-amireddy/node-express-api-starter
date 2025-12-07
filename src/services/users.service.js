@@ -3,16 +3,18 @@ import { db } from '#config/database.js';
 import { users } from '#models/user.model.js';
 import { eq } from 'drizzle-orm';
 
-export const getAllUsers = async () => { 
-  try{
-    return await db.select({
-      id: users.id,
-      email: users.email,
-      name: users.name,
-      role: users.role,
-      created_at: users.created_at,
-      updated_at: users.updated_at,
-    }).from(users);
+export const getAllUsers = async () => {
+  try {
+    return await db
+      .select({
+        id: users.id,
+        email: users.email,
+        name: users.name,
+        role: users.role,
+        created_at: users.created_at,
+        updated_at: users.updated_at,
+      })
+      .from(users);
   } catch (error) {
     logger.error('Error fetching users:', error);
     throw error;

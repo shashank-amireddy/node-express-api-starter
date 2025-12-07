@@ -16,7 +16,11 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use(
+  morgan('combined', {
+    stream: { write: message => logger.info(message.trim()) },
+  })
+);
 
 app.use(securityMiddleware);
 
@@ -27,7 +31,13 @@ app.get('/', (req, res) => {
 
 app.get('/health', (req, res) => {
   logger.info('Health check endpoint accessed');
-  res.status(200).send({status: 'OK', timestamp: new Date().toISOString(), uptime: process.uptime()});
+  res
+    .status(200)
+    .send({
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+    });
 });
 
 app.get('/api', (req, res) => {

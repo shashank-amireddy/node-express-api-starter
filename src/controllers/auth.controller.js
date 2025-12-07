@@ -9,18 +9,37 @@ export const signup = async (req, res, next) => {
   try {
     const validationResult = signUpSchema.safeParse(req.body);
     if (!validationResult.success) {
-      return res.status(400).send({ error: 'Validation failed', details: formatValidationErrors(validationResult.error) });
+      return res
+        .status(400)
+        .send({
+          error: 'Validation failed',
+          details: formatValidationErrors(validationResult.error),
+        });
     }
-    const {name, email,password, role} = validationResult.data;
+    const { name, email, password, role } = validationResult.data;
 
     const user = await createUser({ name, email, password, role });
-    const token = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
+    const token = jwttoken.sign({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
     cookies.set(res, 'token', token);
     logger.info(`User signed up: ${name}, ${email}, ${role}`);
-    res.status(201).send({ message: 'User signed up successfully', user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+    res
+      .status(201)
+      .send({
+        message: 'User signed up successfully',
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      });
   } catch (error) {
     logger.error('Error in sign-up:', error);
-    if(error.message === 'User with this email already exists') {
+    if (error.message === 'User with this email already exists') {
       res.status(409).send({ error: error.message });
     } else {
       next(error);
